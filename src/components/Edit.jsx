@@ -1,21 +1,21 @@
 import { useState } from "react";
 
-const Create = ({ setAdd, notes, setNotes }) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-
-  const noteObj = {
-    id: crypto.randomUUID(),
+const Edit = ({ editingNote, setEditingNote , setNotes }) => {
+  const [title, setTitle] = useState(editingNote.title);
+  const [content, setContent] = useState(editingNote.content);
+  const updateObj = {
+    id: editingNote.id,
     title: title,
     content: content,
   };
+  // in create: setNotes((prevNote) => [...prevNote, noteObj]);
+  const update = (prevNote) =>
+    prevNote.map((note) => (note.id === editingNote.id ? updateObj : note));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setAdd(false);
-    setNotes((prevNote) => [...prevNote, noteObj]);
-    console.log(noteObj);
-    console.log(notes);
+    setNotes(update);
+    setEditingNote(null);
   };
 
   return (
@@ -36,12 +36,10 @@ const Create = ({ setAdd, notes, setNotes }) => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        <button type="submit">
-          Create
-        </button>
+        <button type="submit">Save</button>
       </form>
     </div>
   );
 };
 
-export default Create;
+export default Edit;
