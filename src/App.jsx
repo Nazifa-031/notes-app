@@ -2,21 +2,46 @@ import Navbar from "./layout/Navbar";
 import Create from "./components/Create";
 import Display from "./components/Display";
 import Edit from "./components/Edit";
-import React, { useState, useEffect } from "react";
+import Search from "./components/Search";
+import { useState, useEffect } from "react";
 
 const App = () => {
   const [add, setAdd] = useState(false); // add btn is closed
+  const [searchbtn, setSearchbtn] = useState(false);
+
   const [notes, setNotes] = useState(() => {
     const saved = localStorage.getItem("notes");
     return saved ? JSON.parse(saved) : [];
   });
+
   const [editingNote, setEditingNote] = useState(null);
 
-  useEffect(() => {if (notes.length === 0) {setAdd(true);}}, []); // runs once when the component mounts
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("");
+
+  useEffect(() => {
+    if (notes.length === 0) {
+      setAdd(true);
+    }
+  }, []); // runs once when the component mounts
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
+  }, [notes]); // runs every time a notes changes
+
+  const filterNsort = notes
+  .filter((n) =>
+    n.title.toLowerCase().includes(search.toLowerCase()),
+  )
+  .sort((a, b) => {
+    if (sort === "latest") {
+      return new Date(b.date) - new Date(a.date); // a is the first note and b is the second note. So if b is greater than a, it will return a positive value, which means b will be placed before a in the sorted array. This results in the latest notes appearing first.eg. if b is 2023 and a is 2022, then b-a = 1, which means b will be placed before a in the sorted array. This results in the latest notes appearing first.
+    } else if (sort === "oldest") {
+      return new Date(a.date) - new Date(b.date);
+    } else {
+      return 0; // No sorting if sort is not specified
+    }
+  });
 
   const deleteNote = (cardId) => {
     const filter = notes.filter((note) => note.id !== cardId);
@@ -31,7 +56,7 @@ const App = () => {
 
   return (
     <>
-      <Navbar setAdd={setAdd} />
+      <Navbar setAdd={setAdd} setSearchbtn={setSearchbtn} />
 
       {editingNote ? (
         <Edit
@@ -43,7 +68,24 @@ const App = () => {
       ) : add ? (
         <Create notes={notes} setNotes={setNotes} setAdd={setAdd} />
       ) : (
-        <Display notes={notes} deleteNote={deleteNote} edit={edit} />
+        <>
+          {/* Search appears above Display */}
+          {searchbtn && (
+            <Search
+              search={search}
+              setSearch={setSearch}
+              setSearchbtn={setSearchbtn}
+               sort={sort}
+              setSort={setSort}
+            />
+          )}
+          {/* Display stays visible */}
+          <Display
+            filterNsort={filterNsort} // instead of just note.. because ?? we could have kept the notes and added filter instead of always giving filtered results ? ans
+            deleteNote={deleteNote}
+            edit={edit}
+          />
+        </>
       )}
     </>
   );

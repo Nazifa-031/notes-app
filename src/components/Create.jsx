@@ -8,6 +8,7 @@ const Create = ({ setAdd, notes, setNotes }) => {
     id: crypto.randomUUID(),
     title: title,
     content: content,
+    date : Date.now()
   };
 
   const handleSubmit = (e) => {

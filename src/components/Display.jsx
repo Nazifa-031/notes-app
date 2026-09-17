@@ -1,12 +1,8 @@
-import React from "react";
-
-const Display = ({ notes, deleteNote ,edit }) => {
-  
+const Display = ({ filterNsort, deleteNote, edit }) => {
   return (
     <div>
-
       <div>
-        {notes.map((n) => (
+        {filterNsort.map((n) => (
           <div key={n.id}>
             <h3>Title : {n.title}</h3>
             <p>Content : {n.content}</p>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Edit = ({ editingNote, setEditingNote , setNotes }) => {
+const Edit = ({ editingNote, setEditingNote, setNotes }) => {
   const [title, setTitle] = useState(editingNote.title);
   const [content, setContent] = useState(editingNote.content);
   const updateObj = {
@@ -16,6 +16,8 @@ const Edit = ({ editingNote, setEditingNote , setNotes }) => {
     e.preventDefault();
     setNotes(update);
     setEditingNote(null);
+    setTitle("");
+    setContent("");
   };
 
   return (
