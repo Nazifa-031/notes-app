@@ -67,12 +67,11 @@ const Edit = ({ editingNote, setEditingNote, setNotes }) => {
           />
         </div>
 
-        {/* justify-between: Cancel sits opposite Save, mirroring the delete/edit
-            icon layout you already use in Notes.jsx card footer */}
+        
         <div className="flex justify-between items-center">
           <button
             type="button"
-            onClick={() => setEditingNote(null)}
+            onClick={() => setEditingNote(null) }
             className="text-(--secondary-text-color) text-sm font-semibold
                        hover:text-(--text-color) transition-colors duration-150 cursor-pointer"
           >

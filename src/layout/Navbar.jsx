@@ -4,7 +4,7 @@ const Navbar = ({ setAdd, setSearchbtn }) => {
     // backdrop-blur + translucent bg: subtle "frosted glass" bar over content
     <div className="sticky top-0 z-10 flex items-center justify-between gap-4 px-6 py-4 bg-(--surface-color)/80 backdrop-blur-md border-b border-(--secondary-text-color)/15">
       <h1 className="text-xl font-bold text-(--text-color) tracking-tight">
-        Notes{" "}
+        Notes
       </h1>
 
       <div className="flex flex-wrap items-center gap-3">
@@ -22,7 +22,7 @@ const Navbar = ({ setAdd, setSearchbtn }) => {
                      hover:shadow-md hover:-translate-y-0.5  
                      active:translate-y-0 active:shadow-sm 
                      transition-all duration-200 
-                      cursor-pointer"
+                    cursor-pointer"
         >
           Add Note
         </button>

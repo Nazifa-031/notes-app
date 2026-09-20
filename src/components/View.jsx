@@ -1,7 +1,14 @@
 import { FaTrash, FaEdit } from "react-icons/fa";
-// import Navbar from "../layout/Navbar";
+import { useParams } from "react-router-dom";
 
-const View = ({ note, deleteNote, edit }) => {
+const View = ({ notes, deleteNote, edit }) => {
+  const { id } = useParams();
+  const note = notes.find((note) => note.id === id);
+  
+   if (!note) {
+    return <p>Note not found.</p>;
+  }
+  
   return (
     <>
       <div className="max-h-screen w-full mt-4 gap-5  px-6">

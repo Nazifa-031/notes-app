@@ -1,13 +1,13 @@
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-import { Link } from "react-router-dom";
+
 
 const Display = ({ notes, deleteNote, edit, view }) => {
   // empty state: shown when search/filter leaves nothing to display, or when there are simply no notes yet
   if (notes.length === 0) {
     return (
       <p className="text-center text-(--secondary-text-color) mt-16">
-        No notes found.
+        No notes found. Please add a note .
       </p>
     );
   }
@@ -43,7 +43,7 @@ const Display = ({ notes, deleteNote, edit, view }) => {
                 type="button"
                 className="p-1 pl-0 cursor-pointer hover:opacity-70 transition-opacity"
                 onClick={() => {
-                  return view(n.id) && <Link to="/view" />;
+                  return view(n.id);
                 }}
               >
                 <FaEye />

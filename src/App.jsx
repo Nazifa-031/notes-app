@@ -4,7 +4,7 @@ import Display from "./components/Display";
 import Edit from "./components/Edit";
 import Search from "./components/Search";
 import View from "./components/View";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const App = () => {
@@ -17,7 +17,6 @@ const App = () => {
   });
 
   const [editingNote, setEditingNote] = useState(null);
-  const [viewingNote, setViewingNote] = useState(null); // for viewing a note
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
@@ -47,25 +46,20 @@ const App = () => {
   const deleteNote = (cardId) => {
     const filter = notes.filter((note) => note.id !== cardId);
     setNotes(filter);
-    setViewingNote(null);
     navigate("/");
   };
 
   const edit = (cardId) => {
     // edit is a function used to find which note is to be edited using button
     const edit = notes.find((note) => note.id === cardId);
-    setEditingNote(edit); // so editing note is set to found the note to be edited
-    navigate("/edit");
+    setEditingNote(edit); // so editing note is set to -  found the note to be edited
+    navigate("/");
   };
 
   const navigate = useNavigate();
-  const view = (cardId) => {
-    const found = notes.find((note) => note.id === cardId);
 
-    if (found) {
-      setViewingNote(found); // so viewing note is set to true when the view button is clicked
-      navigate("/view"); // navigate to the view page when the view button is clicked
-    }
+  const view = (cardId) => {
+    navigate(`/view/${cardId}`);
   };
 
   return (
@@ -73,28 +67,21 @@ const App = () => {
       <Navbar setAdd={setAdd} setSearchbtn={setSearchbtn} />
       <Routes>
         <Route
-          path="/view"
-          element={
-            <View note={viewingNote} deleteNote={deleteNote} edit={edit} />
-          }
-        />
-
-        <Route
-          path="/edit"
-          element={
-            <Edit
-              notes={notes}
-              setNotes={setNotes}
-              editingNote={editingNote}
-              setEditingNote={setEditingNote}
-            />
-          }
+          path="/view/:id"
+          element={<View notes={notes} deleteNote={deleteNote} edit={edit} />}
         />
 
         <Route
           path="/"
           element={
-            add ? (
+            editingNote ? (
+              <Edit
+                notes={notes}
+                setNotes={setNotes}
+                editingNote={editingNote}
+                setEditingNote={setEditingNote}
+              />
+            ) : add ? (
               <Create notes={notes} setNotes={setNotes} setAdd={setAdd} />
             ) : (
               <>
