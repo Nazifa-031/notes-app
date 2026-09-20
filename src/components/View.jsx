@@ -18,11 +18,11 @@ const View = ({ notes, deleteNote, edit }) => {
                      px-6 py-2 mt-4 shadow-sm hover:shadow-lg hover:-translate-y-1
                      transition-all duration-200"
         >
-          <div className="flex flex-col flex-1 mb-2">
-            <h3 className="text-3xl mb-3 first-letter:uppercase lowercase font-bold overflow-x-auto scrollbar-hide truncate">
-              {note.title}
-            </h3>
-            <p className="text-base text-(--secondary-text-color)  min-h-[70vh] overflow-y-auto scrollbar-hide leading-relaxed">
+          <div className="flex flex-col flex-1 ">
+           <h3 className="text-3xl mb-3 py-1 first-letter:uppercase lowercase font-bold overflow-x-auto scrollbar-hide">
+  {note.title}
+</h3>
+            <p className="text-base mb-2 text-(--secondary-text-color)  min-h-[70vh] overflow-y-auto scrollbar-hide leading-relaxed">
               {note.content}
             </p>
           </div>
