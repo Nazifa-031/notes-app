@@ -3,6 +3,8 @@ import Create from "./components/Create";
 import Display from "./components/Display";
 import Edit from "./components/Edit";
 import Search from "./components/Search";
+import View from "./components/View";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const App = () => {
@@ -15,6 +17,7 @@ const App = () => {
   });
 
   const [editingNote, setEditingNote] = useState(null);
+  const [viewingNote, setViewingNote] = useState(null); // for viewing a note
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
@@ -30,63 +33,93 @@ const App = () => {
   }, [notes]); // runs every time a notes changes
 
   const filterNsort = notes
-  .filter((n) =>
-    n.title.toLowerCase().includes(search.toLowerCase()),
-  )
-  .sort((a, b) => {
-    if (sort === "latest") {
-      return new Date(b.date) - new Date(a.date); // a is the first note and b is the second note. So if b is greater than a, it will return a positive value, which means b will be placed before a in the sorted array. This results in the latest notes appearing first.eg. if b is 2023 and a is 2022, then b-a = 1, which means b will be placed before a in the sorted array. This results in the latest notes appearing first.
-    } else if (sort === "oldest") {
-      return new Date(a.date) - new Date(b.date);
-    } else {
-      return 0; // No sorting if sort is not specified
-    }
-  });
+    .filter((n) => n.title.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => {
+      if (sort === "latest") {
+        return new Date(b.date) - new Date(a.date); // a is the first note and b is the second note. So if b is greater than a, it will return a positive value, which means b will be placed before a in the sorted array. This results in the latest notes appearing first.eg. if b is 2023 and a is 2022, then b-a = 1, which means b will be placed before a in the sorted array. This results in the latest notes appearing first.
+      } else if (sort === "oldest") {
+        return new Date(a.date) - new Date(b.date);
+      } else {
+        return 0; // No sorting if sort is not specified
+      }
+    });
 
   const deleteNote = (cardId) => {
     const filter = notes.filter((note) => note.id !== cardId);
     setNotes(filter);
+    setViewingNote(null);
+    navigate("/");
   };
 
   const edit = (cardId) => {
     // edit is a function used to find which note is to be edited using button
     const edit = notes.find((note) => note.id === cardId);
     setEditingNote(edit); // so editing note is set to found the note to be edited
+    navigate("/edit");
+  };
+
+  const navigate = useNavigate();
+  const view = (cardId) => {
+    const found = notes.find((note) => note.id === cardId);
+
+    if (found) {
+      setViewingNote(found); // so viewing note is set to true when the view button is clicked
+      navigate("/view"); // navigate to the view page when the view button is clicked
+    }
   };
 
   return (
     <>
       <Navbar setAdd={setAdd} setSearchbtn={setSearchbtn} />
-
-      {editingNote ? (
-        <Edit
-          notes={notes}
-          setNotes={setNotes}
-          editingNote={editingNote}
-          setEditingNote={setEditingNote}
+      <Routes>
+        <Route
+          path="/view"
+          element={
+            <View note={viewingNote} deleteNote={deleteNote} edit={edit} />
+          }
         />
-      ) : add ? (
-        <Create notes={notes} setNotes={setNotes} setAdd={setAdd} />
-      ) : (
-        <>
-          {/* Search appears above Display */}
-          {searchbtn && (
-            <Search
-              search={search}
-              setSearch={setSearch}
-              setSearchbtn={setSearchbtn}
-               sort={sort}
-              setSort={setSort}
+
+        <Route
+          path="/edit"
+          element={
+            <Edit
+              notes={notes}
+              setNotes={setNotes}
+              editingNote={editingNote}
+              setEditingNote={setEditingNote}
             />
-          )}
-          {/* Display stays visible */}
-          <Display
-            filterNsort={filterNsort} // instead of just note.. because ?? we could have kept the notes and added filter instead of always giving filtered results ? ans
-            deleteNote={deleteNote}
-            edit={edit}
-          />
-        </>
-      )}
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            add ? (
+              <Create notes={notes} setNotes={setNotes} setAdd={setAdd} />
+            ) : (
+              <>
+                {/* Search appears above Display */}
+                {searchbtn && (
+                  <Search
+                    search={search}
+                    setSearch={setSearch}
+                    setSearchbtn={setSearchbtn}
+                    sort={sort}
+                    setSort={setSort}
+                  />
+                )}
+                {/* Display stays visible */}
+                <Display
+                  notes={filterNsort} // instead of just note.. because ?? we could have kept the notes and added filter instead of always giving filtered results ? ans
+                  deleteNote={deleteNote}
+                  edit={edit}
+                  view={view}
+                />
+              </>
+            )
+          }
+        />
+      </Routes>
     </>
   );
 };
