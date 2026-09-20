@@ -56,7 +56,7 @@ const Create = ({ setAdd, notes, setNotes }) => {
                        border border-(--secondary-text-color)/25 rounded-xl
                        px-4 py-2 text-lg font-semibold outline-none
                        focus:border-(--brand-color) focus:ring-2 focus:ring-(--brand-color)/20
-                       transition-colors duration-150"
+                       transition-colors duration-150 mb-2"
           />
         </div>
 
@@ -67,9 +67,7 @@ const Create = ({ setAdd, notes, setNotes }) => {
           >
             Content
           </label>
-          {/* textarea instead of input: lets note content wrap over multiple lines.
-              resize-none stops the user dragging it huge; min-h/max-h keeps it from
-              collapsing too short or growing past the card comfortably */}
+        
           <textarea
             id="content"
             value={content}

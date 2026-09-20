@@ -23,7 +23,7 @@ const Display = ({ notes, deleteNote, edit, view }) => {
                      transition-all duration-200"
           >
             <div className="flex flex-col flex-1 min-h-0 mb-1">
-              <h3 className="text-2xl first-letter:uppercase lowercase font-bold overflow-x-auto scrollbar-hide truncate">
+              <h3 className="mb-2 text-2xl first-letter:uppercase lowercase font-bold overflow-x-auto scrollbar-hide truncate">
                 {n.title}
               </h3>
               <p className="text-base text-(--secondary-text-color) overflow-y-auto scrollbar-none flex-1 leading-relaxed">
