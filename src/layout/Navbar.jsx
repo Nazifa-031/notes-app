@@ -1,4 +1,9 @@
+import { useLocation } from "react-router-dom";
 const Navbar = ({ setAdd, setSearchbtn }) => {
+  const location = useLocation();
+
+  const isViewPage = location.pathname.startsWith("/view/");
+
   return (
     // sticky: stays pinned to top while scrolling long note lists
     // backdrop-blur + translucent bg: subtle "frosted glass" bar over content
@@ -10,6 +15,7 @@ const Navbar = ({ setAdd, setSearchbtn }) => {
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"
+          disabled={isViewPage}
           onClick={() => {
             setAdd((prev) => !prev);
             setSearchbtn(false);
@@ -22,13 +28,14 @@ const Navbar = ({ setAdd, setSearchbtn }) => {
                      hover:shadow-md hover:-translate-y-0.5  
                      active:translate-y-0 active:shadow-sm 
                      transition-all duration-200 
-                    cursor-pointer"
+                    cursor-pointer       disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Add Note
         </button>
 
         <button
           type="button"
+          disabled={isViewPage}
           onClick={() => {
             setSearchbtn((prev) => !prev);
             setAdd(false);
@@ -38,7 +45,8 @@ const Navbar = ({ setAdd, setSearchbtn }) => {
                      px-4 py-2 rounded-full border border-(--brand-color)
                      hover:bg-(--brand-color)/10
                      active:scale-95 
-                     transition-all duration-200 cursor-pointer"
+                     transition-all duration-200 cursor-pointer
+                     disabled:opacity-40 disabled:cursor-not-allowed "
         >
           Search
         </button>
